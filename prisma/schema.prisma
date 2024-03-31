@@ -51,7 +51,7 @@ model Group {
   program           Program @relation("ProgramToGroup", fields: [programId], references: [id])
   programId         String
   members           GroupMember[]  // morat cemo dodati posebni model za trebn
-  trainers  GroupMember[] @relation("GroupToTrainers")  // m2m relation trainers 
+  //trainers  GroupMember[] @relation("GroupToTrainers" // m2m relation trainers 
   price             Int
   term              String?
   createdAt         DateTime @default(now())
@@ -67,7 +67,7 @@ model GroupMember {
   member            Member  @relation(fields: [memberId], references: [id])
   memberId          String
   trainerGroupId String?
-  trainerGroup   Group? @relation("GroupToTrainers", fields: [trainerGroupId], references: [id])
+  //trainerGroup   Group? @relation("GroupToTrainers", fields: [trainerGroupId], references: [id])
   
   @@id([groupId, memberId])
   @@index([groupId])
