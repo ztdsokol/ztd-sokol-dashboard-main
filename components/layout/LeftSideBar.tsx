@@ -70,17 +70,17 @@ const LeftSideBar = () => {
                 <Layers /> Programi
               </div>
             </AccordionTrigger>
-            <Link key="2" href="/groups">
+            <Link key="2" href="/grupe">
               <AccordionContent className="pl-12  mt-1.5 ">
                 Škola gimnastike
               </AccordionContent>
             </Link>
-            <Link key="2" href="/groups">
+            <Link key="2" href="/grupe">
               <AccordionContent className="pl-12">
                 Napredna gimnastika
               </AccordionContent>
             </Link>
-            <Link key="2" href="/groups">
+            <Link key="2" href="/grupe">
               <AccordionContent className="pl-12">Parkur</AccordionContent>
             </Link>
           </AccordionItem>

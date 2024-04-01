@@ -39,6 +39,7 @@ const formSchema = z.object({
   members: z.array(z.string()),
   trainers: z.array(z.string()),
   price: z.coerce.number().min(0),
+  term: z.string().nullable().optional(),
 });
 
 type GroupFormValues = z.infer<typeof formSchema>;
@@ -80,6 +81,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
       name: "",
       locationId: "",
       programId: "",
+      term: "", // Add an empty string as the default value for the term property
       price: 0,
       members: [],
       trainers: [],
@@ -128,6 +130,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
         price: data.price,
         locationId: data.locationId,
         programId: data.programId,
+        term: data.term,
         members: data.members.map((memberId: string) => ({ memberId })),
         id: params?.grupaId,
         trainers: data.trainers.map((trainerGroupId: any) => ({
@@ -195,7 +198,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
           <div className="grid grid-cols-3 gap-8">
             <div className="flex flex-col gap-3">
               <div className="rounded-xl border bg-card text-card-foreground shadow">
-                <div className="flex flex-col justify-center  p-4 gap-12">
+                <div className="flex flex-col justify-center  p-4 pb-6 gap-4">
                   <FormField
                     control={form.control}
                     name="name"
@@ -218,10 +221,36 @@ export const GroupForm: React.FC<GroupFormProps> = ({
                   />
                   <FormField
                     control={form.control}
+                    name="term"
+                    render={({ field }: { field: any }) => (
+                      <FormItem className="flex flex-row items-center h-4">
+                        <FormLabel className="text-sm text-muted-foreground min-w-[133px] pt-2">
+                          Termin grupe
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            className="text-sm font-medium leading-none bg-transparent border-0 border-b-0 p-0 h-auto  focus-visible:ring-offset-0 focus-visible:ring-0 rounded-none "
+                            disabled={loading}
+                            placeholder="Termin grupe"
+                            {...field}
+                            value={field.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              <div className="rounded-xl border bg-card text-card-foreground shadow">
+                <div className="flex flex-col justify-center  p-4 gap-12">
+                  <FormField
+                    control={form.control}
                     name="programId"
                     render={({ field }) => (
                       <FormItem className="flex flex-row items-center h-4">
-                        <FormLabel className="text-sm text-muted-foreground min-w-[133px] pt-2">
+                        <FormLabel className="text-sm text-muted-foreground min-w-[133px] pt-1">
                           Program
                         </FormLabel>
                         <FormControl>
@@ -232,7 +261,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
                             defaultValue={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger className="text-sm font-medium leading-none bg-transparent border-0 border-b-0 p-0 h-auto  focus-visible:ring-offset-0 focus-visible:ring-0 rounded-none ">
+                              <SelectTrigger className="text-sm font-medium leading-none bg-transparent border-0 border-b-0 p-0 pb-1 h-auto  focus-visible:ring-offset-0 focus-visible:ring-0 rounded-none ">
                                 <SelectValue
                                   defaultValue={field.value}
                                   placeholder="Odaberite program"
@@ -262,7 +291,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
                     name="locationId"
                     render={({ field }) => (
                       <FormItem className="flex flex-row items-center h-4">
-                        <FormLabel className="text-sm text-muted-foreground min-w-[133px] pt-2">
+                        <FormLabel className="text-sm text-muted-foreground min-w-[133px] pt-1">
                           Lokacija
                         </FormLabel>
                         <FormControl>
@@ -273,7 +302,7 @@ export const GroupForm: React.FC<GroupFormProps> = ({
                             defaultValue={field.value}
                           >
                             <FormControl>
-                              <SelectTrigger className="text-sm font-medium leading-none bg-transparent border-0 border-b-0 p-0 h-auto  focus-visible:ring-offset-0 focus-visible:ring-0 rounded-none ">
+                              <SelectTrigger className="text-sm font-medium leading-none bg-transparent border-0 border-b-0 p-0 pb-1 h-auto  focus-visible:ring-offset-0 focus-visible:ring-0 rounded-none ">
                                 <SelectValue
                                   defaultValue={field.value}
                                   placeholder="Odaberite lokaciju"
@@ -306,12 +335,12 @@ export const GroupForm: React.FC<GroupFormProps> = ({
                     name="price"
                     render={({ field }) => (
                       <FormItem className="flex flex-row items-center h-4">
-                        <FormLabel className="text-sm text-muted-foreground min-w-[133px] pt-2">
-                          Price
+                        <FormLabel className="text-sm text-muted-foreground min-w-[133px] pt-1">
+                          Cijena
                         </FormLabel>
                         <FormControl>
                           <Input
-                            className="text-sm font-medium leading-none bg-transparent border-0 border-b-0 p-0 h-auto  focus-visible:ring-offset-0 focus-visible:ring-0 rounded-none "
+                            className="text-sm font-medium leading-none bg-transparent border-0 border-b-0 p-0  pb-2 h-auto  focus-visible:ring-offset-0 focus-visible:ring-0 rounded-none "
                             type="number"
                             disabled={loading}
                             placeholder="Ime grupe"
@@ -331,13 +360,13 @@ export const GroupForm: React.FC<GroupFormProps> = ({
                     control={form.control}
                     name="members"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-center h-4">
+                      <FormItem className="flex flex-col items-start ">
                         <FormLabel className="text-sm text-muted-foreground min-w-[133px] pt-2">
                           Članovi
                         </FormLabel>
                         <FormControl>
                           <MultiSelectMember
-                            placeholder="ccc"
+                            placeholder="Članovi grupe"
                             members={members}
                             loading={loading}
                             action={action}
@@ -358,13 +387,6 @@ export const GroupForm: React.FC<GroupFormProps> = ({
                   />
                 </div>
               </div>
-              <Button
-                disabled={loading}
-                className="ml-auto"
-                onClick={handleFinalSelection}
-              >
-                {action}
-              </Button>
             </div>
             <div className="rounded-xl border bg-card text-card-foreground shadow">
               <div className="flex flex-col justify-center  p-4 gap-12">
@@ -372,13 +394,13 @@ export const GroupForm: React.FC<GroupFormProps> = ({
                   control={form.control}
                   name="trainers"
                   render={({ field }) => (
-                    <FormItem className="flex flex-row items-center h-4">
+                    <FormItem className="flex flex-col items-start h-4">
                       <FormLabel className="text-sm text-muted-foreground min-w-[133px] pt-2">
-                        trainers
+                        Treneri
                       </FormLabel>
                       <FormControl>
                         <MultiSelectMember
-                          placeholder="trainers"
+                          placeholder="Treneri grupe"
                           members={trainers}
                           loading={loading}
                           action={action}
@@ -400,6 +422,13 @@ export const GroupForm: React.FC<GroupFormProps> = ({
               </div>
             </div>
           </div>
+          <Button
+            disabled={loading}
+            className="ml-auto"
+            onClick={handleFinalSelection}
+          >
+            {action}
+          </Button>
         </form>
       </Form>
       <Separator className="mt-4" />

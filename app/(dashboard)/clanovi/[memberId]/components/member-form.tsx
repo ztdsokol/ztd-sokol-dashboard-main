@@ -215,7 +215,7 @@ export const MemberForm: React.FC<MemberFormProps> = ({
           <div className="grid grid-cols-3 gap-8">
             <div className="flex flex-col gap-3">
               <div className="rounded-xl border bg-card text-card-foreground shadow">
-                <div className="flex flex-col justify-center  p-4 gap-12">
+                <div className="flex flex-col justify-start  p-4 gap-2">
                   <FormField
                     control={form.control}
                     name="name"
@@ -240,7 +240,7 @@ export const MemberForm: React.FC<MemberFormProps> = ({
                     control={form.control}
                     name="memberRoles"
                     render={({ field }) => (
-                      <FormItem className="flex flex-row items-center h-4">
+                      <FormItem className="flex flex-col items-start justify-start ">
                         <FormLabel className="text-sm text-muted-foreground min-w-[133px]">
                           Tip člana
                         </FormLabel>
@@ -533,14 +533,14 @@ export const MemberForm: React.FC<MemberFormProps> = ({
                 </FormItem>
               )}
             />
-            <Button
-              disabled={loading}
-              className="ml-auto "
-              onClick={handleFinalSelection}
-            >
-              {action}
-            </Button>
           </div>
+          <Button
+            disabled={loading}
+            className=" "
+            onClick={handleFinalSelection}
+          >
+            {action}
+          </Button>
         </form>
       </Form>
       <Separator className="mt-4" />

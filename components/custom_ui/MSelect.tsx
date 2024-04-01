@@ -87,13 +87,13 @@ const MultiSelectMember: React.FC<MultiSelectProps> = ({
 
       <div className="relative mt-2">
         {open && (
-          <div className="absolute w-full z-30 top-0 overflow-auto border rounded-md shadow-md">
+          <div className="absolute w-full z-30 top-0 overflow-auto border rounded-md shadow-md bg-white p-2">
             {selectables.map((member) => (
               <div
                 key={member.id}
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => onChange(member.id)}
-                className="hover:bg-grey-2 cursor-pointer"
+                className="hover:bg-grey-2 cursor-pointer  p-2 text-sm font-medium leading-none"
               >
                 {member.name}
               </div>

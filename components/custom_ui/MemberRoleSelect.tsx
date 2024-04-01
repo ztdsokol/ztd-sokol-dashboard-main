@@ -69,7 +69,7 @@ const MultiSelectMemberRole: React.FC<MultiSelectProps> = ({
 
   return (
     <div className="overflow-visible   mt-2 ">
-      <div className="flex flex-wrap gap-1  border border-black h-7 rounded-md [&>*]:h-6 ">
+      <div className="flex gap-1 flex-wrap border rounded-md">
         {selected.map((memberRole) => (
           <Badge
             key={memberRole.id}
