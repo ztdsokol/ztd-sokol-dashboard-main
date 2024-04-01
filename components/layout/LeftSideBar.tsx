@@ -64,6 +64,7 @@ const LeftSideBar = () => {
               </AccordionContent>
             </Link> */}
           </AccordionItem>
+          {/* 
           <AccordionItem value="item-2">
             <AccordionTrigger className=" pl-2 gap-4 py-1.5 max-w-52 w-full">
               <div className="flex flex-row gap-4 items-center  ">
@@ -83,8 +84,15 @@ const LeftSideBar = () => {
             <Link key="2" href="/grupe">
               <AccordionContent className="pl-12">Parkur</AccordionContent>
             </Link>
-          </AccordionItem>
+          </AccordionItem> */}
         </Accordion>
+        <Link key="1" href="/grupe">
+          <div className="flex flex-row gap-4 items-center text-sm font-medium pl-2 hover:underline ">
+            {" "}
+            <Layers className="w-6 h-6  my-1.5" />
+            Programi
+          </div>
+        </Link>
         <Link key="1" href="/campaigns">
           <div className="flex flex-row gap-4 items-center text-sm font-medium pl-2 hover:underline ">
             {" "}
