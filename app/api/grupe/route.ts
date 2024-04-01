@@ -2,7 +2,13 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 
 import prismadb from "@/lib/prismadb";
+interface MemberInput {
+  memberId: string;
+}
 
+interface TrainerInput {
+  trainerGroupId: string;
+}
 function generateRandomNumberString(length: number) {
   let result = "";
   for (let i = 0; i < length; i++) {
@@ -19,6 +25,7 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const { name, locationId, programId, members, price, trainers } = body;
+    console.log("🚀 ~ POST ~ trainers:", trainers);
 
     // if (!userId) {
     //   return new NextResponse("Unauthorized", { status: 403 });
@@ -27,26 +34,33 @@ export async function POST(req: Request) {
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
     }
-    const memberIds = members.map((member: { memberId: string }) => ({
+    const memberData = members.map((member: MemberInput) => ({
       memberId: member.memberId,
     }));
 
+    const trainerIds = trainers.map(
+      (trainer: TrainerInput) => trainer.trainerGroupId
+    );
+
     const group = await prismadb.group.create({
       data: {
-        id: randomNumberString,
         name,
         locationId,
         programId,
         price,
-        trainers,
         members: {
           createMany: {
-            data: memberIds,
+            data: memberData.map((member: any, index: any) => ({
+              memberId: member.memberId,
+              trainerGroupId: trainerIds[index] || null,
+            })),
           },
         },
       },
       include: { members: true },
     });
+
+    console.log("🚀 ~ POST ~ group:", group);
     return NextResponse.json(group);
   } catch (error) {
     console.log("[GOUPS_POST]", error);

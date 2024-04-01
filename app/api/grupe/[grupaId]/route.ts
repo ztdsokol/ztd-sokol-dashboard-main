@@ -2,13 +2,19 @@ import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 
 import prismadb from "@/lib/prismadb";
+interface MemberInput {
+  memberId: string;
+}
 
+interface TrainerInput {
+  trainerGroupId: string;
+}
 export async function PUT(req: Request) {
   try {
     // const { userId } = auth();
     const body = await req.json();
 
-    const { id, name, locationId, programId, members, price } = body;
+    const { id, name, locationId, programId, members, price, trainers } = body;
     console.log("🚀 ~ PUT ~ members:", members);
 
     // if (!userId) {
@@ -24,6 +30,13 @@ export async function PUT(req: Request) {
     const memberIds = members.map((member: { memberId: string }) => ({
       memberId: member.memberId,
     }));
+    const memberData = members.map((member: MemberInput) => ({
+      memberId: member.memberId,
+    }));
+
+    const trainerIds = trainers.map(
+      (trainer: TrainerInput) => trainer.trainerGroupId
+    );
 
     await prismadb.group.update({
       where: { id },
@@ -43,7 +56,10 @@ export async function PUT(req: Request) {
       data: {
         members: {
           createMany: {
-            data: memberIds,
+            data: memberData.map((member: any, index: any) => ({
+              memberId: member.memberId,
+              trainerGroupId: trainerIds[index] || null,
+            })),
           },
         },
       },

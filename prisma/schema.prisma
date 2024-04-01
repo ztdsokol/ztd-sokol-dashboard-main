@@ -27,6 +27,7 @@ model Member {
   name              String
   memberRoles       MemberMemberRole[]
   groups            GroupMember[]
+  campaigns         CampaignMember[]
   birthdate         DateTime?
   oib_number        Int
   contact_name      String
@@ -50,8 +51,8 @@ model Group {
   locationId        String
   program           Program @relation("ProgramToGroup", fields: [programId], references: [id])
   programId         String
-  members           GroupMember[]  // morat cemo dodati posebni model za trebn
-  //trainers  GroupMember[] @relation("GroupToTrainers" // m2m relation trainers 
+  members           GroupMember[]  
+  campaigns         CampaignGroup[]
   price             Int
   term              String?
   createdAt         DateTime @default(now())
@@ -66,7 +67,7 @@ model GroupMember {
   groupId           String
   member            Member  @relation(fields: [memberId], references: [id])
   memberId          String
-  trainerGroupId String?
+  trainerGroupId    String?
   //trainerGroup   Group? @relation("GroupToTrainers", fields: [trainerGroupId], references: [id])
   
   @@id([groupId, memberId])
@@ -102,71 +103,47 @@ model Invoice {
 }
 
 
-model MemberMemberRole {
-  memberRoles             MemberRole   @relation(fields: [memberRoleId], references: [id])
-  memberRoleId            String
-  members           Member  @relation(fields: [memberId], references: [id])
-  memberId          String
-  
-  @@index([memberRoleId])
-  @@index([memberId])
-  @@id([memberRoleId, memberId])
-}
+  model MemberMemberRole {
+    memberRoles       MemberRole   @relation(fields: [memberRoleId], references: [id])
+    memberRoleId      String
+    members           Member  @relation(fields: [memberId], references: [id])
+    memberId          String
+    
+    @@index([memberRoleId])
+    @@index([memberId])
+    @@id([memberRoleId, memberId])
+  }
 
 model Campaign {
   id                 String    @id @default(uuid())
   name               String
-  message               String
-  members              String? // m2m relation users
-  groups             String? // m2m relation groups
+  message            String
+  members            CampaignMember[] // m2m relation users
+  groups             CampaignGroup[] // m2m relation groups
   price              Int
   paymentDescription String?
   createdAt          DateTime @default(now())
   isSent             Boolean? @default(false)
 }
 
-
-
-// model Trainer {
-//   id                String    @id @default(uuid())
-//   name              String
-//   students          TrainerStudent[]
-//   createdAt         DateTime @default(now())
-//   updatedAt         DateTime @updatedAt
-// }
-
-// model Student {
-//   id                String    @id @default(uuid())
-//   name              String
-//   trainers        TrainerStudent[] 
-//   createdAt         DateTime @default(now())
-//   updatedAt         DateTime @updatedAt
-// }
-
-// model TrainerStudent {
-//   students             Student   @relation(fields: [studentId], references: [id])
-//   studentId            String
-//   trainers           Trainer  @relation(fields: [trainerId], references: [id])
-//   trainerId          String
+model CampaignMember {
+  campaign             Campaign   @relation(fields: [campaignId], references: [id])
+  campaignId           String
+  member            Member  @relation(fields: [memberId], references: [id])
+  memberId          String
   
-//   @@index([studentId])
-//   @@index([trainerId])
-//   @@id([studentId, trainerId])
-// }
+  @@id([campaignId, memberId])
+  @@index([campaignId])
+  @@index([memberId])
+}
 
-
-// model Trainer {
-//   id                String    @id @default(uuid())
-//   name              String
-//   students          Student[]
-//   createdAt         DateTime @default(now())
-//   updatedAt         DateTime @updatedAt
-// }
-
-// model Student {
-//   id                String    @id @default(uuid())
-//   name              String
-//   trainers        Trainer[]
-//   createdAt         DateTime @default(now())
-//   updatedAt         DateTime @updatedAt
-// }
+model CampaignGroup {
+  campaign             Campaign   @relation(fields: [campaignId], references: [id])
+  campaignId           String
+  group            Group  @relation(fields: [groupId], references: [id])
+  groupId          String
+ 
+  @@id([campaignId, groupId])
+  @@index([campaignId])
+  @@index([groupId])
+}

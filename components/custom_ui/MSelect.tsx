@@ -8,23 +8,17 @@ interface MultiSelectProps {
   placeholder: string;
   members: Member[];
   selectedMembers: Member[];
-  onMemberChange: (selectedMembers: Member[]) => void;
   loading: boolean;
   action: string;
   setSelected: any;
-  handleFinalSelection: () => void;
   selected: Member[];
 }
 
 const MultiSelectMember: React.FC<MultiSelectProps> = ({
   placeholder,
   members,
-  loading,
   setSelected,
-  handleFinalSelection,
   selected,
-  action,
-  onMemberChange,
   selectedMembers: initiallySelectedMembers,
 }) => {
   const [open, setOpen] = useState(false);

@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import LeftSideBar from "@/components/layout/LeftSideBar";
 import TopBar from "@/components/layout/TopBar";
 import { ToasterProvider } from "@/lib/ToasterProvider";
+import { GeistSans } from "geist/font/sans";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={GeistSans.className}>
           <ToasterProvider />
           <TopBar />
           <div className="flex flex-row">
